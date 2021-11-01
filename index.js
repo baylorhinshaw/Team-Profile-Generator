@@ -129,13 +129,71 @@ const addingIntern = () => {
 
 
 // Start making html and create seperate cards taking in employee rolls 
+// Will be using for loop to go through employees to make cards and use getRole to know which cards to make
+// Will need to make body empty so cards can be created into it
 
-// in src create a javascript file that takes the employees array and returns an html page for fs.writeFile
 const makeHtml = () => {
+    let body = '';
 
+    for (let i = 0; i < employees.length; i++) {
+        if (employees[i].getRole() === 'Manager') {
+            body += makeManagerCard(employees[i]);
+        } else if (employees[i].getRole() === 'Engineer') {
+            body += makeEngineerCard(employees[i]);
+        } else if (employees[i].getRole() === 'Intern') {
+            body += makeInternCard(employees[i]);
+        } 
+    };
 
-
-
-    fs.writeFile('./dist/index.html', html, )
+    let htmlPage = `<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <title>Team Profile Generator</title>
+    </head>
+    <body>
+        <header>
+            <h1>My Team</h1>
+        </header>
+        <div>
+            ${body}
+        </div>
+    </body>
+    </html>`;
+    
+    fs.writeFile('./dist/index.html', htmlPage, function (err) {
+    if (err) throw err;
+     console.log('New Team!');
+    });
 }
 
+const makeManagerCard = (manager) => {
+    return `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${getRole(manager)}</h5>
+      <div class="card-text">Name: ${manager.name} Id: ${manager.id} Email: ${manager.email} Office Number: ${manager.officeNumber} </div>
+    </div>
+  </div>`
+}
+
+const makeEngineerCard = (engineer) => {
+    return `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${getRole(engineer)}</h5>
+      <div class="card-text">Name: ${engineer.name} Id: ${engineer.id} Email: ${engineer.email}</div>
+      <a href="https://www.github.com/${engineer.github}" target=''>GitHub: ${engineer.github}</a>
+    </div>
+  </div>`
+}
+
+const makeInternCard = (intern) => {
+    return `<div class="card" style="width: 18rem;">
+    <div class="card-body">
+      <h5 class="card-title">${getRole(intern)}</h5>
+      <div class="card-text">Name: ${intern.name} Id: ${intern.id} Email: ${intern.email} School: ${intern.school} </div>
+      </div>
+  </div>`
+}
