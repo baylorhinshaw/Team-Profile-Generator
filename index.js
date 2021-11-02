@@ -2,9 +2,9 @@
 // Making a empty array to put new employees 
 const fs = require('fs');
 const inquirer = require('inquirer');
-const Manager = require("./Lib/manager");
-const Engineer = require("./Lib/engineer");
-const Intern = require("./Lib/intern");
+const Manager = require("./lib/manager");
+const Engineer = require("./lib/engineer");
+const Intern = require("./lib/intern");
 const employees = [];
 
 // Generating questions the different employees
@@ -165,13 +165,14 @@ const makeHtml = () => {
     </html>`;
     
     fs.writeFile('./dist/index.html', htmlPage, function (err) {
-    if (err) throw err;
-     console.log('New Team!');
+    if (err) {
+        console.log('There was an error!');
+    }
     });
 }
 
 const makeManagerCard = (manager) => {
-    return `<div class="card" style="width: 18rem;">
+    return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">${getRole(manager)}</h5>
       <div class="card-text">Name: ${manager.name} Id: ${manager.id} Email: ${manager.email} Office Number: ${manager.officeNumber} </div>
@@ -180,7 +181,7 @@ const makeManagerCard = (manager) => {
 }
 
 const makeEngineerCard = (engineer) => {
-    return `<div class="card" style="width: 18rem;">
+    return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">${getRole(engineer)}</h5>
       <div class="card-text">Name: ${engineer.name} Id: ${engineer.id} Email: ${engineer.email}</div>
@@ -190,7 +191,7 @@ const makeEngineerCard = (engineer) => {
 }
 
 const makeInternCard = (intern) => {
-    return `<div class="card" style="width: 18rem;">
+    return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
       <h5 class="card-title">${getRole(intern)}</h5>
       <div class="card-text">Name: ${intern.name} Id: ${intern.id} Email: ${intern.email} School: ${intern.school} </div>
