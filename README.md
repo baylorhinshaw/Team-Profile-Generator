@@ -5,3 +5,5 @@ As a team manager I want to generate a webpage for my team where I can add there
 
 ## Link to pages
 https://baylorhinshaw.github.io/Team-Profile-Generator/
+
+## Link to video of how to use
