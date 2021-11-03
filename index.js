@@ -7,7 +7,7 @@ const Engineer = require("./lib/engineer");
 const Intern = require("./lib/intern");
 const employees = [];
 
-// Generating questions the different employees
+// Generating questions foe the different employees and ask if you want to add more
 const anotherEmployeeQuestions=[{
     type: 'list',
     message: `Would you like to add employee's?`,
@@ -96,7 +96,7 @@ const addingAnotherEmployee = () => {
         .then((response) => {
             if (response.employees === 'Engineer') {
                 addingEngineer();
-            } else if (response.employees === 'intern') {
+            } else if (response.employees === 'Intern') {
                 addingIntern();
             } else {
                 makeHtml();
@@ -120,7 +120,7 @@ const addingIntern = () => {
     inquirer.prompt(internQuestions)
     .then((response) => {
         const intern = new Intern(response.name, response.id, response.email, response.school)
-        intern.push(Intern);
+        employees.push(intern);
         addingAnotherEmployee();
     })
 } 
@@ -144,7 +144,7 @@ const makeHtml = () => {
             body += makeInternCard(employees[i]);
         } 
     };
-
+// Making html then will use it to writeFile
     let htmlPage = `<!DOCTYPE html>
     <html lang="en">
     <head>
@@ -152,13 +152,14 @@ const makeHtml = () => {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="./style.css">
         <title>Team Profile Generator</title>
     </head>
     <body>
         <header>
             <h1>My Team</h1>
         </header>
-        <div>
+        <div class="cards">
             ${body}
         </div>
     </body>
@@ -171,11 +172,15 @@ const makeHtml = () => {
     });
 }
 
+// Different cards will be created to be put into the html with responses
 const makeManagerCard = (manager) => {
     return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
-      <h5 class="card-title">${getRole(manager)}</h5>
-      <div class="card-text">Name: ${manager.name} Id: ${manager.id} Email: ${manager.email} Office Number: ${manager.officeNumber} </div>
+      <h5 class="card-title">${manager.getRole()}</h5>
+      <div class="card-text">Name: ${manager.name}</div>
+      <div class="card-text">ID: ${manager.id}</div>
+      <a class="emailLink" href="mailto:${manager.email}">Email: ${manager.email}</a>
+      <div class="card-text">Office Number: ${manager.officeNumber}</div>
     </div>
   </div>`
 }
@@ -183,8 +188,10 @@ const makeManagerCard = (manager) => {
 const makeEngineerCard = (engineer) => {
     return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
-      <h5 class="card-title">${getRole(engineer)}</h5>
-      <div class="card-text">Name: ${engineer.name} Id: ${engineer.id} Email: ${engineer.email}</div>
+      <h5 class="card-title">${engineer.getRole()}</h5>
+      <div class="card-text">Name: ${engineer.name}</div>
+      <div class="card-text">ID: ${engineer.id}</div>
+      <div class="card-text"><a class="emailLink" href="mailto:${engineer.email}">Email: ${engineer.email}</a></div>
       <a href="https://www.github.com/${engineer.github}" target=''>GitHub: ${engineer.github}</a>
     </div>
   </div>`
@@ -193,8 +200,11 @@ const makeEngineerCard = (engineer) => {
 const makeInternCard = (intern) => {
     return `<div class="card text-white bg-dark mb-3" style="width: 18rem;">
     <div class="card-body">
-      <h5 class="card-title">${getRole(intern)}</h5>
-      <div class="card-text">Name: ${intern.name} Id: ${intern.id} Email: ${intern.email} School: ${intern.school} </div>
+      <h5 class="card-title">${intern.getRole()}</h5>
+      <div class="card-text">Name: ${intern.name}</div>
+      <div class="card-text">ID: ${intern.id}</div> 
+      <a class="emailLink" href="mailto:${intern.email}">Email: ${intern.email}</a>
+      <div class="card-text">School: ${intern.school}</div>
       </div>
-  </div>`
+  </div>` 
 }
